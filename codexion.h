@@ -46,6 +46,7 @@ typedef struct s_simulation
 }					t_simulation;
 
 int	init_simulation(t_simulation *sim);
+int	start_threads(t_simulation *sim);
 
 #endif
 

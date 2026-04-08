@@ -26,3 +26,14 @@ int	start_threads(t_simulation *sim)
 	}
 	return (0);
 }
+void join_threads(t_simulation *sim)
+{
+    int i;
+
+    i = 0;
+    while (i < sim->args.number_of_coders)
+    {
+        pthread_join(sim->coders[i].thread, NULL);
+        i++;
+    }
+}

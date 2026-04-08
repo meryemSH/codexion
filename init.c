@@ -2,14 +2,23 @@
 
 int	init_simulation(t_simulation *sim)
 {
-	if (init_mutex(sim))
-		return (1);
 	if (init_memory(sim))
 		return (1);
+	if (init_mutex(sim))
+	{
+		cleanup(sim);
+		return (1);
+	}
 	if (init_dongles(sim))
+	{
+		cleanup(sim);
 		return (1);
+	}
 	if (init_coders(sim))
+	{
+		cleanup(sim);
 		return (1);
+	}
 	return (0);
 }
 int	init_mutex(t_simulation *sim)

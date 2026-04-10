@@ -43,11 +43,24 @@ typedef struct s_simulation
 	t_dongle		*dongles;
 	int				is_running;
 	pthread_mutex_t log_mutex;
+	long	start_time;
 }					t_simulation;
 
 int	init_simulation(t_simulation *sim);
 int	start_threads(t_simulation *sim);
+void    cleanup(t_simulation *sim);
+int	is_positive(char *str);
+int	check_args(int argc, char **argv);
+void	fill_args(char **argv, t_args *args);
+void	*routine(void *arg);
+int	init_memory(t_simulation *sim);
+int	init_mutex(t_simulation *sim);
+int	init_dongles(t_simulation *sim);
+int	init_coders(t_simulation *sim);
+void join_threads(t_simulation *sim);
+// /////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
 #endif
 
 // ### Field by field:

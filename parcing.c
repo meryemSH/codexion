@@ -57,14 +57,14 @@ void	fill_args(char **argv, t_args *args)
 	args->scheduler[4] = '\0';
 }
 
-int	main(int argc, char **argv)
-{
-	t_args	args;
+// int	main(int argc, char **argv)
+// {
+// 	t_args	args;
 
-	if (!check_args(argc, argv))
-		return (1);
-	fill_args(argv, &args);
-	printf("Coders: %d | Scheduler: %s\n", args.number_of_coders,
-		args.scheduler);
-	return (0);
-}
+// 	if (!check_args(argc, argv))
+// 		return (1);
+// 	fill_args(argv, &args);
+// 	printf("Coders: %d | Scheduler: %s\n", args.number_of_coders,
+// 		args.scheduler);
+// 	return (0);
+// }

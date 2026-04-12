@@ -36,3 +36,7 @@ void	join_threads(t_simulation *sim)
 		i++;
 	}
 }
+void *monitor(void *arg)
+{
+	
+}

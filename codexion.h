@@ -25,6 +25,8 @@ typedef struct s_dongle
 	pthread_mutex_t	mutex;
 }					t_dongle;
 
+typedef struct s_simulation	t_simulation;
+
 typedef struct s_coder
 {
 	int				id;
@@ -37,7 +39,7 @@ typedef struct s_coder
 	t_simulation	*sim;
 }					t_coder;
 
-typedef struct s_simulation
+struct s_simulation
 {
 	t_args			args;
 	t_coder			*coders;
@@ -45,7 +47,7 @@ typedef struct s_simulation
 	int				is_running;
 	pthread_mutex_t	log_mutex;
 	long			start_time;
-}					t_simulation;
+};
 
 int					init_simulation(t_simulation *sim);
 int					start_threads(t_simulation *sim);
@@ -59,6 +61,8 @@ int					init_mutex(t_simulation *sim);
 int					init_dongles(t_simulation *sim);
 int					init_coders(t_simulation *sim);
 void				join_threads(t_simulation *sim);
+long	get_time(void);
+void	log_action(t_simulation *sim, int id, char *msg);
 // /////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////

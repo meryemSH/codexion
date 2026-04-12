@@ -38,5 +38,20 @@ void	join_threads(t_simulation *sim)
 }
 void *monitor(void *arg)
 {
-	
+	t_simulation    *sim;
+	int             i;
+
+	sim = (t_simulation *)arg;
+	while (simulation_running(sim))
+	{
+		i = 0;
+		while (i < sim->args.number_of_coders)
+		{
+			if (get_time() - sim->coders[i].last_compile_time >= sim->args.time_to_burnout)
+			{
+				
+			}
+			i++;
+		}
+	}
 }

@@ -57,11 +57,19 @@ void *monitor(void *arg)
 		i = 0;
 		while (i < sim->args.number_of_coders)
 		{
+			pthread_mutex_lock(&sim->log_mutex);
 			if (get_time() - sim->coders[i].last_compile_time >= sim->args.time_to_burnout)
 			{
-				
+				log_action(sim, sim->coders[i].id, "burnout");
+				pthread_mutex_lock(&sim->log_mutex);
+				sim->is_running = 0;
+				pthread_mutex_unlock(&sim->log_mutex);
+				return NULL;
 			}
+			pthread_mutex_unlock(&sim->log_mutex);
 			i++;
 		}
+		usleep(1000);
 	}
+	return NULL;
 }

@@ -8,61 +8,64 @@
 
 typedef struct s_args
 {
-	int				number_of_coders;
-	int				time_to_burnout;
-	int				time_to_compile;
-	int				time_to_debug;
-	int				time_to_refactor;
-	int				number_of_compiles_required;
-	int				dongle_cooldown;
-	char			scheduler[5];
-}					t_args;
+	int						number_of_coders;
+	int						time_to_burnout;
+	int						time_to_compile;
+	int						time_to_debug;
+	int						time_to_refactor;
+	int						number_of_compiles_required;
+	int						dongle_cooldown;
+	char					scheduler[5];
+}							t_args;
 
 typedef struct s_dongle
 {
-	int				is_taken;
-	long			release_time;
-	pthread_mutex_t	mutex;
-}					t_dongle;
+	int						is_taken;
+	long					release_time;
+	pthread_mutex_t			mutex;
+}							t_dongle;
+
+typedef struct s_simulation	t_simulation;
 
 typedef struct s_simulation	t_simulation;
 
 typedef struct s_coder
 {
-	int				id;
-	int				compile_count;
-	long			last_compile_time;
-	int				is_alive;
-	t_dongle		*left_dongle;
-	t_dongle		*right_dongle;
-	pthread_t		thread;
-	t_simulation	*sim;
-}					t_coder;
+	int						id;
+	int						compile_count;
+	long					last_compile_time;
+	int						is_alive;
+	t_dongle				*left_dongle;
+	t_dongle				*right_dongle;
+	pthread_t				thread;
+	t_simulation			*sim;
+}							t_coder;
 
-struct s_simulation
+struct						s_simulation
 {
-	t_args			args;
-	t_coder			*coders;
-	t_dongle		*dongles;
-	int				is_running;
-	pthread_mutex_t	log_mutex;
-	long			start_time;
+	t_args					args;
+	t_coder					*coders;
+	t_dongle				*dongles;
+	int						is_running;
+	pthread_mutex_t			log_mutex;
+	long					start_time;
+	pthread_t				monitor_thread;
 };
 
-int					init_simulation(t_simulation *sim);
-int					start_threads(t_simulation *sim);
-void				cleanup(t_simulation *sim);
-int					is_positive(char *str);
-int					check_args(int argc, char **argv);
-void				fill_args(char **argv, t_args *args);
-void				*routine(void *arg);
-int					init_memory(t_simulation *sim);
-int					init_mutex(t_simulation *sim);
-int					init_dongles(t_simulation *sim);
-int					init_coders(t_simulation *sim);
-void				join_threads(t_simulation *sim);
-long	get_time(void);
-void	log_action(t_simulation *sim, int id, char *msg);
+int							init_simulation(t_simulation *sim);
+int							start_threads(t_simulation *sim);
+void						cleanup(t_simulation *sim);
+int							is_positive(char *str);
+int							check_args(int argc, char **argv);
+void						fill_args(char **argv, t_args *args);
+void						*routine(void *arg);
+int							init_memory(t_simulation *sim);
+int							init_mutex(t_simulation *sim);
+int							init_dongles(t_simulation *sim);
+int							init_coders(t_simulation *sim);
+void						join_threads(t_simulation *sim);
+long						get_time(void);
+void						log_action(t_simulation *sim, int id, char *msg);
 // /////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////

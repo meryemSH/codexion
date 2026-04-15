@@ -1,5 +1,15 @@
 #include "codexion.h"
 
+int	get_isrunning(t_simulation *sim)
+{
+	int	value;
+
+	pthread_mutex_lock(&sim->lock);
+	value = sim->is_running;
+	pthread_mutex_unlock(&sim->lock);
+	return (value);
+}
+
 void	*routine(void *arg)
 {
 	t_coder		*coder;
@@ -8,7 +18,7 @@ void	*routine(void *arg)
 	coder = (t_coder *)arg;
 	sim = coder->sim;
 	log_action(sim, coder->id, "started");
-	while (sim->is_running)
+	while (get_isrunning(sim))
 		usleep(1000);
 	return (NULL);
 }

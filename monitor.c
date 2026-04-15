@@ -5,9 +5,9 @@ static int	simulation_running(t_simulation *sim)
 {
 	int	running;
 
-	pthread_mutex_lock(&sim->log_mutex);
+	pthread_mutex_lock(&sim->lock);
 	running = sim->is_running;
-	pthread_mutex_unlock(&sim->log_mutex);
+	pthread_mutex_unlock(&sim->lock);
 	return (running);
 }
 
@@ -21,9 +21,9 @@ static int	check_burnout(t_simulation *sim, int i)
 	if (elapsed >= sim->args.time_to_burnout)
 	{
 		log_action(sim, sim->coders[i].id, "burned out");
-		pthread_mutex_lock(&sim->log_mutex);
+		pthread_mutex_lock(&sim->lock);
 		sim->is_running = 0;
-		pthread_mutex_unlock(&sim->log_mutex);
+		pthread_mutex_unlock(&sim->lock);
 		return (1);
 	}
 	return (0);

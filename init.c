@@ -27,6 +27,8 @@ int	init_mutex(t_simulation *sim)
 	sim->is_running = 1;
 	if (pthread_mutex_init(&sim->log_mutex, NULL) != 0)
 		return (1);
+	if (pthread_mutex_init(&sim->lock, NULL) != 0)
+		return (1);
 	return (0);
 }
 int	init_memory(t_simulation *sim)

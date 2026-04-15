@@ -5,7 +5,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
-#include <unistd.h>
+# include <unistd.h>
 
 typedef struct s_args
 {
@@ -48,9 +48,10 @@ struct						s_simulation
 	t_coder					*coders;
 	t_dongle				*dongles;
 	int						is_running;
-	pthread_mutex_t			log_mutex;
 	long					start_time;
 	pthread_t				monitor_thread;
+	pthread_mutex_t			log_mutex;
+	pthread_mutex_t			lock;
 };
 
 int							init_simulation(t_simulation *sim);

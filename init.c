@@ -70,12 +70,31 @@ int	init_coders(t_simulation *sim)
 	{
 		sim->coders[i].id = i + 1;
 		sim->coders[i].compile_count = 0;
-		sim->coders[i].last_compile_time = 0;
+		sim->coders[i].last_compile_time = sim->start_time;
 		sim->coders[i].is_alive = 1;
 		sim->coders[i].left_dongle = &sim->dongles[i];
 		sim->coders[i].right_dongle = &sim->dongles[(i + 1) % n];
-		sim->coders[i].sim = sim;
+		sim->coders[i].sim = sim; // exp in bas 
 		i++;
 	}
 	return (0);
 }
+// sim->coders[i].sim = sim; (chouf struct dyal coder w sim)
+
+// `pthread_create` kayt3tik ghi **wahed argument** — `void *arg`.
+
+// F routine, had l arg howa `t_coder *` — donc:
+// ```c
+// coder = (t_coder *)arg;
+// ```
+
+// Daba ila routine khassها twsl l simulation — mn fin?
+
+// **Mn coder!** Donc zidna `sim` f struct dyal coder:
+// ```c
+// coder->sim  →  twsl l simulation
+// ```
+
+// Bla hadi, routine ma3ndahash access l simulation.
+
+// Fhmti?

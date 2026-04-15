@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+#include <unistd.h>
 
 typedef struct s_args
 {
@@ -66,6 +67,7 @@ int							init_coders(t_simulation *sim);
 void						join_threads(t_simulation *sim);
 long						get_time(void);
 void						log_action(t_simulation *sim, int id, char *msg);
+void						*monitor(void *arg);
 // /////////////////////////////////////////////////////////////////////////////
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -2,17 +2,22 @@
 
 void	*routine(void *arg)
 {
-	t_coder	*coder;
+	t_coder		*coder;
+	t_simulation	*sim;
 
 	coder = (t_coder *)arg;
-	printf("Coder %d started\n", coder->id);
+	sim = coder->sim;
+	log_action(sim, coder->id, "started");
+	while (sim->is_running)
+		usleep(1000);
 	return (NULL);
 }
 
 int	start_threads(t_simulation *sim)
 {
-	int	i;
-	int	n;
+	int			i;
+	int			n;
+	pthread_t	monitor_thread;
 
 	i = 0;
 	n = sim->args.number_of_coders;
@@ -23,11 +28,15 @@ int	start_threads(t_simulation *sim)
 			return (1);
 		i++;
 	}
+	if (pthread_create(&monitor_thread, NULL, monitor, sim) != 0)
+		return (1);
+	pthread_join(monitor_thread, NULL);
 	return (0);
 }
+
 void	join_threads(t_simulation *sim)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < sim->args.number_of_coders)
@@ -35,41 +44,4 @@ void	join_threads(t_simulation *sim)
 		pthread_join(sim->coders[i].thread, NULL);
 		i++;
 	}
-}
-static int	simulation_running(t_simulation *sim)
-{
-	int	running;
-
-	pthread_mutex_lock(&sim->log_mutex);
-	running = sim->is_running;
-	pthread_mutex_unlock(&sim->log_mutex);
-	return (running);
-}
-
-void *monitor(void *arg)
-{
-	t_simulation    *sim;
-	int             i;
-
-	sim = (t_simulation *)arg;
-	while (simulation_running(sim))
-	{
-		i = 0;
-		while (i < sim->args.number_of_coders)
-		{
-			pthread_mutex_lock(&sim->log_mutex);
-			if (get_time() - sim->coders[i].last_compile_time >= sim->args.time_to_burnout)
-			{
-				log_action(sim, sim->coders[i].id, "burnout");
-				pthread_mutex_lock(&sim->log_mutex);
-				sim->is_running = 0;
-				pthread_mutex_unlock(&sim->log_mutex);
-				return NULL;
-			}
-			pthread_mutex_unlock(&sim->log_mutex);
-			i++;
-		}
-		usleep(1000);
-	}
-	return NULL;
 }

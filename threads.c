@@ -27,7 +27,6 @@ int	start_threads(t_simulation *sim)
 {
 	int			i;
 	int			n;
-	pthread_t	monitor_thread;
 
 	i = 0;
 	n = sim->args.number_of_coders;
@@ -38,9 +37,8 @@ int	start_threads(t_simulation *sim)
 			return (1);
 		i++;
 	}
-	if (pthread_create(&monitor_thread, NULL, monitor, sim) != 0)
+	if (pthread_create(&sim->monitor_thread, NULL, monitor, sim) != 0)
 		return (1);
-	pthread_join(monitor_thread, NULL);
 	return (0);
 }
 
@@ -49,6 +47,7 @@ void	join_threads(t_simulation *sim)
 	int	i;
 
 	i = 0;
+	pthread_join(sim->monitor_thread, NULL);
 	while (i < sim->args.number_of_coders)
 	{
 		pthread_join(sim->coders[i].thread, NULL);

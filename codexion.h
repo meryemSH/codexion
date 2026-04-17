@@ -50,6 +50,7 @@ struct						s_simulation
 	int						is_running;
 	long					start_time;
 	pthread_t				monitor_thread;
+	pthread_t				monitor_thread;
 	pthread_mutex_t			log_mutex;
 	pthread_mutex_t			lock;
 };

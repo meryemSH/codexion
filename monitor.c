@@ -11,20 +11,22 @@ static int	simulation_running(t_simulation *sim)
 	return (running);
 }
 
-static int	check_burnout(t_simulation *sim, int i)
+static int	check_burnout(t_simulation *sim)
 {
+	int		i;
 	long	elapsed;
 
-	pthread_mutex_lock(&sim->log_mutex);
-	elapsed = get_time() - sim->coders[i].last_compile_time;
-	pthread_mutex_unlock(&sim->log_mutex);
-	if (elapsed >= sim->args.time_to_burnout)
+	i = 0;
+	while (i < sim->args.number_of_coders)
 	{
-		log_action(sim, sim->coders[i].id, "burned out");
-		pthread_mutex_lock(&sim->lock);
-		sim->is_running = 0;
-		pthread_mutex_unlock(&sim->lock);
-		return (1);
+		elapsed = get_time() - sim->coders[i].last_compile_time;
+		if (elapsed >= sim->args.time_to_burnout)
+		{
+			sim->is_running = 0;
+			log_action(sim, sim->coders[i].id, "burned out");
+			return (1);
+		}
+		i++;
 	}
 	return (0);
 }
@@ -32,19 +34,19 @@ static int	check_burnout(t_simulation *sim, int i)
 void	*monitor(void *arg)
 {
 	t_simulation	*sim;
-	int				i;
 
 	sim = (t_simulation *)arg;
-	while (simulation_running(sim))
+	while (1)
 	{
-		i = 0;
-		while (i < sim->args.number_of_coders)
+		if (!simulation_running(sim))
+			return (NULL);
+		pthread_mutex_lock(&sim->lock);
+		if (check_burnout(sim))
 		{
-			if (check_burnout(sim, i))
-				return (NULL);
-			i++;
+			pthread_mutex_unlock(&sim->lock);
+			return (NULL);
 		}
+		pthread_mutex_unlock(&sim->lock);
 		usleep(1000);
 	}
-	return (NULL);
 }

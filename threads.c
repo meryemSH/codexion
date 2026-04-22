@@ -32,7 +32,7 @@ int	start_threads(t_simulation *sim)
 	n = sim->args.number_of_coders;
 	while (i < n)
 	{
-		if (pthread_create(&sim->coders[i].thread, NULL, routine,
+		if (pthread_create(&sim->coders[i].thread, NULL, &routine,
 				&sim->coders[i]) != 0)
 			return (1);
 		i++;

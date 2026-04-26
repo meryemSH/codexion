@@ -7,6 +7,20 @@
 # include <string.h>
 # include <unistd.h>
 
+# define MAX_CODERS 256
+
+typedef struct s_waiter
+{
+	int coder_id;  // which coder is waiting (ex: coder 3)
+	long priority; // how urgent (smaller = more urgent)
+}							t_waiter;
+
+typedef struct s_heap
+{
+	t_waiter				data[MAX_CODERS]; // the arary of waiters
+	int						size; // how many waiters in it
+}							t_heap;
+
 typedef struct s_args
 {
 	int						number_of_coders;
@@ -24,6 +38,7 @@ typedef struct s_dongle
 	int						is_taken;
 	long					release_time;
 	pthread_mutex_t			mutex;
+	t_heap					queue;
 }							t_dongle;
 
 typedef struct s_simulation	t_simulation;

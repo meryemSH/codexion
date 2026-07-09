@@ -6,18 +6,12 @@
 /*   By: mseghrou <mseghrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 11:52:54 by mseghrou          #+#    #+#             */
-/*   Updated: 2026/07/09 00:00:00 by mseghrou         ###   ########.fr       */
+/*   Updated: 2026/07/09 23:28:50 by mseghrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-/*
-** first_of / second_of always return the same two dongles for a coder
-** ordered by memory address. Locking (or evaluating) them in this fixed
-** order everywhere prevents the classic deadlock (Coffman's circular
-** wait condition).
-*/
 t_dongle	*first_of(t_coder *c)
 {
 	if (c->left_dongle < c->right_dongle)
@@ -32,9 +26,6 @@ t_dongle	*second_of(t_coder *c)
 	return (c->left_dongle);
 }
 
-/*
-** Must be called while holding sim->dongle_lock.
-*/
 int	dongle_ready(t_dongle *d)
 {
 	return (!d->is_taken && get_time() >= d->release_time);
@@ -54,16 +45,9 @@ static int	is_already_waiting(t_dongle *d, int id)
 	return (0);
 }
 
-/*
-** Registers the coder as a waiter on both of its dongles (only once,
-** even if left == right for the single-coder edge case). Each waiter
-** entry remembers which two dongles it actually needs so that later we
-** can tell whether a higher-priority waiter is genuinely able to take
-** its dongles right now, or is itself stuck waiting elsewhere.
-*/
 void	register_waiter(t_coder *c)
 {
-	t_waiter	w;
+	t_waiter		w;
 	t_simulation	*sim;
 
 	sim = c->sim;
@@ -80,14 +64,6 @@ void	register_waiter(t_coder *c)
 	pthread_mutex_unlock(&sim->dongle_lock);
 }
 
-/*
-** A pending waiter `w` (for some coder that is not `c`) only counts as
-** genuinely blocking `c` if `w` could take both of ITS dongles right
-** now. If `w` is itself stuck waiting on a third dongle held by someone
-** else, it must not prevent `c` from going ahead: otherwise a coder
-** blocked elsewhere would freeze a dongle nobody else can use either,
-** causing the whole simulation to serialize (convoy effect).
-*/
 static int	waiter_is_unblocked(t_waiter *w)
 {
 	if (!dongle_ready(w->first))
@@ -114,10 +90,6 @@ static int	queue_blocks(t_dongle *d, t_coder *c, t_waiter *self)
 	return (0);
 }
 
-/*
-** Returns 1 and marks both dongles taken if `c` can acquire them right
-** now. Must be called while holding sim->dongle_lock.
-*/
 static int	can_take_both(t_coder *c, t_dongle *first, t_dongle *second,
 		t_waiter *self)
 {

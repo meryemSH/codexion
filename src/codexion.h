@@ -6,7 +6,7 @@
 /*   By: mseghrou <mseghrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 11:53:59 by mseghrou          #+#    #+#             */
-/*   Updated: 2026/06/29 22:19:35 by mseghrou         ###   ########.fr       */
+/*   Updated: 2026/07/09 14:26:33 by mseghrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@
 # include <string.h>
 # include <unistd.h>
 
-typedef struct s_dongle	t_dongle;
+typedef struct s_dongle		t_dongle;
 
 typedef struct s_waiter
 {
-	int		coder_id;
-	long	value;
-	int		tie_id;
-	t_dongle	*first;
-	t_dongle	*second;
+	int						coder_id;
+	long					value;
+	int						tie_id;
+	t_dongle				*first;
+	t_dongle				*second;
 }							t_waiter;
 
 typedef struct s_heap
@@ -50,7 +50,7 @@ typedef struct s_args
 	char					scheduler[5];
 }							t_args;
 
-struct s_dongle
+struct						s_dongle
 {
 	bool					is_taken;
 	long					release_time;

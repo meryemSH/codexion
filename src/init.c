@@ -6,7 +6,7 @@
 /*   By: mseghrou <mseghrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 11:53:08 by mseghrou          #+#    #+#             */
-/*   Updated: 2026/06/29 22:19:31 by mseghrou         ###   ########.fr       */
+/*   Updated: 2026/07/09 14:27:16 by mseghrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,6 @@ int	init_coders(t_simulation *sim)
 		sim->coders[i].compile_count = 0;
 		sim->coders[i].last_compile_time = sim->start_time;
 		sim->coders[i].wait_value = -1;
-		// sim->coders[i].holding_dongle = NULL;
 		sim->coders[i].time_mutex_init = 0;
 		sim->coders[i].compile_mutex_init = 0;
 		sim->coders[i].left_dongle = &sim->dongles[i];

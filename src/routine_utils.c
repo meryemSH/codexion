@@ -6,7 +6,7 @@
 /*   By: mseghrou <mseghrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 11:53:29 by mseghrou          #+#    #+#             */
-/*   Updated: 2026/06/29 22:19:21 by mseghrou         ###   ########.fr       */
+/*   Updated: 2026/07/09 14:45:47 by mseghrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 
 int	take_dongles(t_coder *c)
 {
-	if (c->left_dongle == c->right_dongle)
-		return (0);
+  	if (c->left_dongle == c->right_dongle)
+    {
+        log_action(c->sim, c->id, "has taken a dongle");
+        return (0);
+    }
 	if (!try_take_both(c))
 		return (0);
 	log_action(c->sim, c->id, "has taken a dongle");

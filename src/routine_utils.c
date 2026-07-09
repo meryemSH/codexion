@@ -12,54 +12,12 @@
 
 #include "codexion.h"
 
-static t_dongle	*first_dongle(t_coder *c)
-{
-	if (c->left_dongle < c->right_dongle)
-		return (c->left_dongle);
-	return (c->right_dongle);
-}
-
-static t_dongle	*second_dongle(t_coder *c)
-{
-	if (c->left_dongle < c->right_dongle)
-		return (c->right_dongle);
-	return (c->left_dongle);
-}
-
-static void	abort_take_dongle(t_coder *c, t_dongle *d)
-{
-	t_waiter	waiter;
-
-	pthread_mutex_lock(&d->mutex);
-	d->is_taken = 0;
-	d->release_time = 0;
-	waiter.coder_id = c->id;
-	waiter.value = c->wait_value;
-	waiter.tie_id = c->id;
-	heap_push(&d->queue, waiter);
-	pthread_mutex_unlock(&d->mutex);
-}
-
 int	take_dongles(t_coder *c)
 {
-	t_dongle	*first;
-	t_dongle	*second;
-
 	if (c->left_dongle == c->right_dongle)
-	{
-		if (try_take_dongle(c, c->left_dongle))
-			log_action(c->sim, c->id, "has taken a dongle");
 		return (0);
-	}
-	first = first_dongle(c);
-	second = second_dongle(c);
-	if (!try_take_dongle(c, first))
+	if (!try_take_both(c))
 		return (0);
-	if (!try_take_dongle(c, second))
-	{
-		abort_take_dongle(c, first);
-		return (0);
-	}
 	log_action(c->sim, c->id, "has taken a dongle");
 	log_action(c->sim, c->id, "has taken a dongle");
 	pthread_mutex_lock(&c->time_mutex);

@@ -40,12 +40,16 @@ int	init_mutex(t_simulation *sim)
 	sim->is_running = 1;
 	sim->log_mutex_init = 0;
 	sim->lock_init = 0;
+	sim->dongle_lock_init = 0;
 	if (pthread_mutex_init(&sim->log_mutex, NULL) != 0)
 		return (1);
 	sim->log_mutex_init = 1;
 	if (pthread_mutex_init(&sim->lock, NULL) != 0)
 		return (1);
 	sim->lock_init = 1;
+	if (pthread_mutex_init(&sim->dongle_lock, NULL) != 0)
+		return (1);
+	sim->dongle_lock_init = 1;
 	return (0);
 }
 
@@ -78,12 +82,8 @@ int	init_dongles(t_simulation *sim)
 	{
 		sim->dongles[i].is_taken = 0;
 		sim->dongles[i].release_time = 0;
-		sim->dongles[i].mutex_init = 0;
 		sim->dongles[i].queue.data = NULL;
 		heap_init(&sim->dongles[i].queue, sim->args.number_of_coders);
-		if (pthread_mutex_init(&sim->dongles[i].mutex, NULL) != 0)
-			return (1);
-		sim->dongles[i].mutex_init = 1;
 		i++;
 	}
 	return (0);

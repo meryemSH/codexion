@@ -20,11 +20,15 @@
 # include <string.h>
 # include <unistd.h>
 
+typedef struct s_dongle	t_dongle;
+
 typedef struct s_waiter
 {
 	int		coder_id;
 	long	value;
 	int		tie_id;
+	t_dongle	*first;
+	t_dongle	*second;
 }							t_waiter;
 
 typedef struct s_heap
@@ -46,14 +50,12 @@ typedef struct s_args
 	char					scheduler[5];
 }							t_args;
 
-typedef struct s_dongle
+struct s_dongle
 {
 	bool					is_taken;
 	long					release_time;
-	pthread_mutex_t			mutex;
-	int						mutex_init;
 	t_heap					queue;
-}							t_dongle;
+};
 
 typedef struct s_simulation	t_simulation;
 
@@ -86,6 +88,8 @@ struct						s_simulation
 	int						log_mutex_init;
 	int						lock_init;
 	pthread_mutex_t			lock;
+	pthread_mutex_t			dongle_lock;
+	int						dongle_lock_init;
 };
 
 int							init_simulation(t_simulation *sim);
@@ -114,12 +118,15 @@ void						bubble_down(t_heap *h, int i);
 int							waiter_less(t_waiter *a, t_waiter *b);
 void						swap(t_waiter *a, t_waiter *b);
 long						get_waiter_value(t_coder *c);
-int							try_take_dongle(t_coder *c, t_dongle *d);
 void						release_dongle(t_simulation *sim, t_dongle *d);
 int							take_dongles(t_coder *c);
 void						remove_waiter(t_dongle *d, int id);
 int							coder_finished(t_coder *c);
 void						smart_sleep(long time, t_simulation *sim);
-void	register_waiter(t_coder *c);
+void						register_waiter(t_coder *c);
+t_dongle					*first_of(t_coder *c);
+t_dongle					*second_of(t_coder *c);
+int							dongle_ready(t_dongle *d);
+int							try_take_both(t_coder *c);
 
 #endif

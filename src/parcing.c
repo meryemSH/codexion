@@ -69,6 +69,26 @@ static int	check_numeric_args(char **argv)
 		printf("Error: time_to_burnout must be at least 1\n");
 		return (0);
 	}
+	if (atoi(argv[3]) <= 0)
+	{
+		printf("Error: time_to_compile must be at least 1\n");
+		return (0);
+	}
+	if (atoi(argv[4]) <= 0)
+	{
+		printf("Error: time_to_debug must be at least 1\n");
+		return (0);
+	}
+	if (atoi(argv[5]) <= 0)
+	{
+		printf("Error: time_to_refactor must be at least 1\n");
+		return (0);
+	}
+	if (atoi(argv[6]) <= 0)
+	{
+		printf("Error: number_of_compiles_required must be at least 1\n");
+		return (0);
+	}
 	return (1);
 }
 

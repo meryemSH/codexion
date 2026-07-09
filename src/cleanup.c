@@ -36,8 +36,6 @@ static void	cleanup_dongles(t_simulation *sim)
 	i = 0;
 	while (i < sim->args.number_of_coders)
 	{
-		if (sim->dongles[i].mutex_init)
-			pthread_mutex_destroy(&sim->dongles[i].mutex);
 		if (sim->dongles[i].queue.data)
 			free(sim->dongles[i].queue.data);
 		i++;
@@ -56,4 +54,6 @@ void	cleanup(t_simulation *sim)
 		pthread_mutex_destroy(&sim->log_mutex);
 	if (sim->lock_init)
 		pthread_mutex_destroy(&sim->lock);
+	if (sim->dongle_lock_init)
+		pthread_mutex_destroy(&sim->dongle_lock);
 }

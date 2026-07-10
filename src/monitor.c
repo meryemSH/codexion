@@ -6,7 +6,7 @@
 /*   By: mseghrou <mseghrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 11:53:20 by mseghrou          #+#    #+#             */
-/*   Updated: 2026/06/29 21:33:34 by mseghrou         ###   ########.fr       */
+/*   Updated: 2026/07/10 20:19:25 by mseghrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	*monitor_routine(void *arg)
 	sim = (t_simulation *)arg;
 	while (1)
 	{
-		usleep(500);
 		if (!get_isrunning(sim))
 			return (NULL);
 		if (check_burnout(sim))

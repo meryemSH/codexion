@@ -6,20 +6,20 @@
 /*   By: mseghrou <mseghrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 11:52:54 by mseghrou          #+#    #+#             */
-/*   Updated: 2026/07/09 23:28:50 by mseghrou         ###   ########.fr       */
+/*   Updated: 2026/07/10 16:23:39 by mseghrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "codexion.h"
 
-t_dongle	*first_of(t_coder *c)
+t_dongle	*first_dongle(t_coder *c)
 {
 	if (c->left_dongle < c->right_dongle)
 		return (c->left_dongle);
 	return (c->right_dongle);
 }
 
-t_dongle	*second_of(t_coder *c)
+t_dongle	*second_dongle(t_coder *c)
 {
 	if (c->left_dongle < c->right_dongle)
 		return (c->right_dongle);
@@ -54,8 +54,8 @@ void	register_waiter(t_coder *c)
 	w.coder_id = c->id;
 	w.value = c->wait_value;
 	w.tie_id = c->id;
-	w.first = first_of(c);
-	w.second = second_of(c);
+	w.first = first_dongle(c);
+	w.second = second_dongle(c);
 	pthread_mutex_lock(&sim->dongle_lock);
 	if (!is_already_waiting(w.first, c->id))
 		heap_push(&w.first->queue, w);
@@ -112,8 +112,8 @@ int	try_take_both(t_coder *c)
 	t_simulation	*sim;
 
 	sim = c->sim;
-	first = first_of(c);
-	second = second_of(c);
+	first = first_dongle(c);
+	second = second_dongle(c);
 	self.coder_id = c->id;
 	self.value = c->wait_value;
 	self.tie_id = c->id;

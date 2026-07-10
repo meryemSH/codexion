@@ -6,7 +6,7 @@
 /*   By: mseghrou <mseghrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 11:53:59 by mseghrou          #+#    #+#             */
-/*   Updated: 2026/07/09 14:26:33 by mseghrou         ###   ########.fr       */
+/*   Updated: 2026/07/10 16:23:32 by mseghrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,8 +124,8 @@ void						remove_waiter(t_dongle *d, int id);
 int							coder_finished(t_coder *c);
 void						smart_sleep(long time, t_simulation *sim);
 void						register_waiter(t_coder *c);
-t_dongle					*first_of(t_coder *c);
-t_dongle					*second_of(t_coder *c);
+t_dongle					*first_dongle(t_coder *c);
+t_dongle					*second_dongle(t_coder *c);
 int							dongle_ready(t_dongle *d);
 int							try_take_both(t_coder *c);
 

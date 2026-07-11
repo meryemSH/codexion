@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mseghrou <mseghrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Meryem <Meryem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 11:53:29 by mseghrou          #+#    #+#             */
-/*   Updated: 2026/07/09 14:45:47 by mseghrou         ###   ########.fr       */
+/*   Updated: 2026/07/11 12:20:24 by Meryem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,17 @@
 
 int	take_dongles(t_coder *c)
 {
-  	if (c->left_dongle == c->right_dongle)
-    {
-        log_action(c->sim, c->id, "has taken a dongle");
-        return (0);
-    }
+	if (c->left_dongle == c->right_dongle)
+	{
+		pthread_mutex_lock(&c->sim->dongle_lock);
+		if (dongle_ready(c->left_dongle))
+		{
+			c->left_dongle->is_taken = 1;
+			log_action(c->sim, c->id, "has taken a dongle");
+		}
+		pthread_mutex_unlock(&c->sim->dongle_lock);
+		return (0);
+	}
 	if (!try_take_both(c))
 		return (0);
 	log_action(c->sim, c->id, "has taken a dongle");

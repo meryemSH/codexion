@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parcing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mseghrou <mseghrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: Meryem <Meryem@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/09 11:53:23 by mseghrou          #+#    #+#             */
-/*   Updated: 2026/06/11 00:01:16 by mseghrou         ###   ########.fr       */
+/*   Updated: 2026/07/11 13:04:19 by Meryem           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,43 +50,18 @@ static int	check_numeric_args(char **argv)
 	int	i;
 
 	i = 1;
-	while (i <= 7)
+	while (i <= 6)
 	{
-		if (!is_positive(argv[i]))
+		if (atoi(argv[i]) <= 0)
 		{
-			printf("Error: argument %d must be a positive integer\n", i);
+			printf("Error: numeric arguments must be greater than 0\n");
 			return (0);
 		}
 		i++;
 	}
-	if (atoi(argv[1]) <= 0)
+	if (atoi(argv[7]) < 0)
 	{
-		printf("Error: number_of_coders must be at least 1\n");
-		return (0);
-	}
-	if (atoi(argv[2]) <= 0)
-	{
-		printf("Error: time_to_burnout must be at least 1\n");
-		return (0);
-	}
-	if (atoi(argv[3]) <= 0)
-	{
-		printf("Error: time_to_compile must be at least 1\n");
-		return (0);
-	}
-	if (atoi(argv[4]) <= 0)
-	{
-		printf("Error: time_to_debug must be at least 1\n");
-		return (0);
-	}
-	if (atoi(argv[5]) <= 0)
-	{
-		printf("Error: time_to_refactor must be at least 1\n");
-		return (0);
-	}
-	if (atoi(argv[6]) <= 0)
-	{
-		printf("Error: number_of_compiles_required must be at least 1\n");
+		printf("Error: dongle_cooldown must be greater than or equal to 0\n");
 		return (0);
 	}
 	return (1);

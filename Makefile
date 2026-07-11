@@ -1,7 +1,7 @@
 NAME	= codexion
 
 CC		= cc
-FLAGS	= -Wall -Wextra -Werror -pthread
+CFLAGS	= -Wall -Wextra -Werror -pthread
 
 SRCS	= src/main.c \
 		  src/init.c \
@@ -16,7 +16,8 @@ SRCS	= src/main.c \
 		  src/heap_push.c \
 		  src/routine_utils.c \
 		  src/scheduler.c \
-		  src/remove_waiter.c
+		  src/remove_waiter.c \
+		  src/dongle_utils.c \
 
 OBJS	= $(SRCS:.c=.o)
 
@@ -24,9 +25,6 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
-
-%.o: %.c
-	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
